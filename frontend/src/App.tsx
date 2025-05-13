@@ -7,6 +7,7 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import UserDashboard from './components/user/UserDashboard';
 import StoreOwnerDashboard from './components/storeOwner/StoreOwnerDashboard';
 import Navbar from './components/common/Navbar';
+import LinkedInCredit from './components/common/LinkedInCredit';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { DataProvider } from './context/DataContext';
@@ -59,6 +60,7 @@ function App() {
                 <Route path="*" element={<Navigate to="/login" />} />
               </Routes>
             </div>
+            <LinkedInCredit />
           </div>
         </DataProvider>
       </AuthProvider>

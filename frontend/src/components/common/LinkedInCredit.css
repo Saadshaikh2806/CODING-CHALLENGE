@@ -1,0 +1,64 @@
+.linkedin-credit {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #1a1a1a;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 1px solid #646cff;
+}
+
+.linkedin-credit:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.linkedin-link {
+  text-decoration: none;
+  color: white;
+  display: block;
+  padding: 10px 16px;
+}
+
+.credit-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.credit-text {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.credit-name {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #646cff;
+}
+
+.linkedin-icon {
+  width: 16px;
+  height: 16px;
+  color: #0077b5;
+}
+
+/* Mobile responsiveness for the credit */
+@media (max-width: 768px) {
+  .linkedin-credit {
+    bottom: 12px;
+    right: 12px;
+    font-size: 0.8rem;
+  }
+  
+  .credit-content {
+    gap: 4px;
+  }
+  
+  .linkedin-icon {
+    width: 14px;
+    height: 14px;
+  }
+} 

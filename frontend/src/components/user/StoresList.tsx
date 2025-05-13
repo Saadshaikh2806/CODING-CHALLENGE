@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllStores } from '../../services/store.service';
 import { submitRating } from '../../services/rating.service';
@@ -12,7 +12,9 @@ const StoresList = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [searchField, setSearchField] = useState<'name' | 'address'>('name');
+  const [localStores, setLocalStores] = useState<Store[]>([]);
 
+  // Initial fetch only once when component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,13 +28,27 @@ const StoresList = () => {
     };
 
     fetchData();
-  }, [refreshStores]);
+    // Deliberately NOT adding refreshStores as a dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Update local stores when stores from context changes
+  useEffect(() => {
+    setLocalStores(stores);
+  }, [stores]);
 
   const handleRatingChange = async (storeId: number, value: number) => {
     try {
       await submitRating(storeId, value);
-      // Refresh data to get the latest updates
-      await refreshStores();
+      
+      // Update local state immediately instead of refreshing all stores
+      setLocalStores(prevStores => 
+        prevStores.map(store => 
+          store.id === storeId 
+            ? { ...store, userRating: value } 
+            : store
+        )
+      );
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to submit rating');
     }
@@ -40,14 +56,13 @@ const StoresList = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Refresh stores when search is performed
-    refreshStores();
+    // No need to refresh all stores for searching
   };
 
-  const filteredStores = stores.filter(store => {
+  const filteredStores = localStores.filter(store => {
     if (!searchTerm) return true;
 
-    const field = store[searchField].toLowerCase();
+    const field = store[searchField]?.toLowerCase() || '';
     return field.includes(searchTerm.toLowerCase());
   });
 

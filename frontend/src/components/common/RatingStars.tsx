@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { FaStar } from 'react-icons/fa';
 import './RatingStars.css';
 
@@ -8,13 +8,18 @@ interface RatingStarsProps {
   onRatingChange?: (rating: number) => void;
 }
 
-const RatingStars = ({ 
+const RatingStars = memo(({ 
   initialRating = 0, 
   editable = false, 
   onRatingChange 
 }: RatingStarsProps) => {
   const [rating, setRating] = useState(initialRating);
   const [hover, setHover] = useState(0);
+
+  // Update local state when initialRating prop changes
+  useEffect(() => {
+    setRating(initialRating);
+  }, [initialRating]);
 
   const handleClick = (value: number) => {
     if (!editable) return;
@@ -41,9 +46,12 @@ const RatingStars = ({
           />
         );
       })}
-      {rating > 0 && <span className="rating-value">{rating}</span>}
+      {rating > 0 && <span className="rating-value">{rating.toFixed(1)}</span>}
     </div>
   );
-};
+});
+
+// Display name for debugging
+RatingStars.displayName = 'RatingStars';
 
 export default RatingStars;

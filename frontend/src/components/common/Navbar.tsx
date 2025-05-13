@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
 import './Navbar.css';
@@ -6,10 +6,16 @@ import './Navbar.css';
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+    setIsMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -19,7 +25,13 @@ const Navbar = () => {
           Store Rating System
         </Link>
         
-        <div className="navbar-menu">
+        <button className="navbar-toggle" onClick={toggleMenu} aria-label="Toggle menu">
+          <span className="toggle-bar"></span>
+          <span className="toggle-bar"></span>
+          <span className="toggle-bar"></span>
+        </button>
+        
+        <div className={`navbar-menu ${isMenuOpen ? 'is-open' : ''}`}>
           {user ? (
             <>
               <span className="navbar-user">
@@ -27,19 +39,19 @@ const Navbar = () => {
               </span>
               
               {user.role === 'admin' && (
-                <Link to="/admin" className="navbar-link">
+                <Link to="/admin" className="navbar-link" onClick={() => setIsMenuOpen(false)}>
                   Dashboard
                 </Link>
               )}
               
               {user.role === 'user' && (
-                <Link to="/user" className="navbar-link">
+                <Link to="/user" className="navbar-link" onClick={() => setIsMenuOpen(false)}>
                   Stores
                 </Link>
               )}
               
               {user.role === 'store_owner' && (
-                <Link to="/store-owner" className="navbar-link">
+                <Link to="/store-owner" className="navbar-link" onClick={() => setIsMenuOpen(false)}>
                   Dashboard
                 </Link>
               )}
@@ -50,10 +62,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link to="/login" className="navbar-link">
+              <Link to="/login" className="navbar-link" onClick={() => setIsMenuOpen(false)}>
                 Login
               </Link>
-              <Link to="/register" className="navbar-link">
+              <Link to="/register" className="navbar-link" onClick={() => setIsMenuOpen(false)}>
                 Register
               </Link>
             </>

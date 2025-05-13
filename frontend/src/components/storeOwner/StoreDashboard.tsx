@@ -115,7 +115,7 @@ const StoreDashboard = () => {
       {storeData.ratings.length === 0 ? (
         <p>No ratings yet</p>
       ) : (
-        <div className="table-responsive">
+        <div className="ratings-table-container">
           <table className="ratings-table">
             <thead>
               <tr>
